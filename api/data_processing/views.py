@@ -1,9 +1,10 @@
 from rest_framework.views import APIView
+from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.parsers import MultiPartParser, FormParser
 from .models import UploadedFile, FileDataType
-from .serializers import UploadedFileSerializer
+from .serializers import UploadedFileSerializer, UploadedFileDetailSerializer
 from .utils import infer_and_convert_data_types
 import pandas as pd
 
@@ -35,3 +36,7 @@ class FileUploadView(APIView):
                 return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class UploadedFileListView(ListAPIView):
+    queryset = UploadedFile.objects.all()
+    serializer_class = UploadedFileDetailSerializer
