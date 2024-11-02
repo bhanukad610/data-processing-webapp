@@ -18,13 +18,14 @@ export const uploadFile = async (file) => {
 };
 
 // Retrieve processed data
-export const fetchFiles = async () => {
+export const fetchFiles = async (page = 1) => {
     try {
-        const response = await axios.get(`${API_URL}/files/`);
-        console.log(response);
-        return response.data;
+      const response = await axios.get(`${API_URL}/files/`, {
+        params: { page }
+      });
+      return response.data;
     } catch (error) {
-        console.error("Error fetching files:", error);
-        return [];
+      console.error("Error fetching files:", error);
+      return { results: [], count: 0 };
     }
-};
+  };  

@@ -5,6 +5,7 @@ from rest_framework import status
 from rest_framework.parsers import MultiPartParser, FormParser
 from .models import UploadedFile, FileDataType
 from .serializers import UploadedFileSerializer, UploadedFileDetailSerializer
+from rest_framework.pagination import PageNumberPagination
 from .utils import infer_and_convert_data_types
 import pandas as pd
 
@@ -37,6 +38,12 @@ class FileUploadView(APIView):
         else:
             return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class CustomPagination(PageNumberPagination):
+    page_size = 5  # Items per page
+    page_size_query_param = 'page_size'
+    max_page_size = 10
+
 class UploadedFileListView(ListAPIView):
     queryset = UploadedFile.objects.all()
     serializer_class = UploadedFileDetailSerializer
+    pagination_class = CustomPagination
