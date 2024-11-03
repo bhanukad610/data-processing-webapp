@@ -28,4 +28,17 @@ export const fetchFiles = async (page = 1) => {
       console.error("Error fetching files:", error);
       return { results: [], count: 0 };
     }
-  };  
+  };
+  
+  export const fetchFilteredFiles = async (page = 1, search = '') => {
+    try {
+      const endpoint = search ? `${API_URL}/files/search/` : `${API_URL}/files/`;
+      const response = await axios.get(endpoint, {
+        params: { page, search },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching files:", error);
+      return { results: [], count: 0 };
+    }
+  };

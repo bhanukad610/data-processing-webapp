@@ -8,6 +8,7 @@ from .serializers import UploadedFileSerializer, UploadedFileDetailSerializer
 from rest_framework.pagination import PageNumberPagination
 from .utils import infer_and_convert_data_types
 import pandas as pd
+from django.db.models import Q
 
 class FileUploadView(APIView):
     parser_classes = [MultiPartParser, FormParser]
@@ -47,3 +48,17 @@ class UploadedFileListView(ListAPIView):
     queryset = UploadedFile.objects.all()
     serializer_class = UploadedFileDetailSerializer
     pagination_class = CustomPagination
+
+class UploadedFileFilterView(ListAPIView):
+    serializer_class = UploadedFileDetailSerializer
+    pagination_class = CustomPagination
+
+    def get_queryset(self):
+        queryset = UploadedFile.objects.all()
+        search_query = self.request.query_params.get('search', None)
+        if search_query:
+            # Modify this filter condition based on your needs
+            queryset = queryset.filter(
+                Q(file__icontains=search_query)
+            ).distinct()
+        return queryset
