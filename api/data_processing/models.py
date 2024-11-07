@@ -7,7 +7,6 @@ class UploadedFile(models.Model):
     def __str__(self):
         return self.file.name
 
-
 class FileDataType(models.Model):
     uploaded_file = models.ForeignKey(UploadedFile, on_delete=models.CASCADE, related_name="data_types")
     column_name = models.CharField(max_length=255)
