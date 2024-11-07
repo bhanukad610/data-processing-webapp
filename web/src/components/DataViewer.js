@@ -70,7 +70,7 @@ const DataViewer = () => {
         {files.map((file) => (
           <li key={file.id}>
             <p><strong>File:</strong> {file.file}</p>
-            <p><strong>Uploaded At:</strong> {new Date(file.created_at).toLocaleString()}</p>
+            <p><strong>Uploaded At:</strong> {new Date(file.uploaded_at).toLocaleString()}</p>
             <ul>
               {file.data_types.map((type, index) => (
                 <li key={index}>
